@@ -28,8 +28,8 @@ module.exports = {
     // 函数名与括号之间，不加空格
     'space-before-function-paren': 0,
     // 强制加分号
-    // 'semi': ['error', 'always'],
-    'semi': 0,
+    'semi': ['error', 'always'],
+    // 'semi': 0,
     // 忽略缩进,因为很多编辑器会自带缩进
     'indent': 0,
     // 允许多行空格

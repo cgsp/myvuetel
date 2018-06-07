@@ -36,6 +36,12 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
+      '@components': path.resolve(__dirname, '../src/components'),
+      '@assets': path.resolve(__dirname, '../src/assets'),
+      '@scss': path.resolve(__dirname, '../src/common/scss'),
+      '@VBusiness': path.resolve(__dirname, '../src/components/business'),
+      '@VBase': path.resolve(__dirname, '../src/components/base'),
+      '@VDashboard': path.resolve(__dirname, '../src/components/dashboard'),
     }
   },
   module: {
@@ -75,10 +81,10 @@ module.exports = {
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       },
-      {
-        test: /\.scss$/,
-        loaders: ["style", "css", "sass"]
-      }
+      // {
+      //   test: /\.scss$/,
+      //   loaders: ["style", "css", "sass"]
+      // }
     ]
   },
   node: {
