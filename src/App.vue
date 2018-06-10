@@ -3,9 +3,8 @@
     <v-header></v-header>
     <tab></tab>
     <keep-alive>
-      <router-view :seller="seller" />
+      <router-view></router-view>
     </keep-alive>
-    <!-- <router-view :seller="seller" /> -->
   </div>
 </template>
 
@@ -15,13 +14,6 @@
 
   export default {
     name: 'App',
-    data() {
-      return {
-        seller: {
-          name: 'gsp'
-        }
-      };
-    },
     components: {
       VHeader,
       Tab
