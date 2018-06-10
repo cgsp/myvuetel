@@ -1,15 +1,12 @@
 <template>
   <div>
-    我是talk
+    search
   </div>
 </template>
 
 <script type='text/ecmascript-6'>
 export default {
-  name: 'TalkComponent',
-  data() {
-    return {};
-  }
+  name: 'Search'
 };
 </script>
 <style scoped rel='stylesheet/scss' lang='scss'>

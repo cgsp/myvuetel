@@ -1,22 +1,32 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import GoodsComponent from '@VBusiness/goods';
-import TalkComponent from '@VBusiness/talk';
+import Rank from '@VBusiness/rank';
+import Recommend from '@VBusiness/recommend';
+import Singer from '@VBusiness/singer';
+import Search from '@VBusiness/search';
 Vue.use(Router);
 
 const router = new Router({
   routes: [
     {
       path: '',
-      redirect: '/goods'
+      redirect: '/recommend'
     },
     {
-      path: '/talk',
-      component: TalkComponent
+      path: '/rank',
+      component: Rank
     },
     {
-      path: '/goods',
-      component: GoodsComponent
+      path: '/singer',
+      component: Singer
+    },
+    {
+      path: '/search',
+      component: Search
+    },
+    {
+      path: '/recommend',
+      component: Recommend
     }
   ]
 });

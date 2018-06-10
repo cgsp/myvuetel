@@ -1,37 +1,34 @@
 <template>
   <div id="app">
     <v-header></v-header>
+    <tab></tab>
     <keep-alive>
-    <router-view :seller="seller" />
-
+      <router-view :seller="seller" />
     </keep-alive>
     <!-- <router-view :seller="seller" /> -->
   </div>
 </template>
 
 <script type='text/ecmascript-6'>
-import VHeader from '@VDashboard/header';
-export default {
-  name: 'App',
-  data() {
-    return {
-      seller: {
-        name: 'gsp'
-      }
-    };
-  },
-  components: {
-    VHeader
-  }
-};
+  import VHeader from '@VDashboard/header';
+  import Tab from '@VDashboard/tab';
+
+  export default {
+    name: 'App',
+    data() {
+      return {
+        seller: {
+          name: 'gsp'
+        }
+      };
+    },
+    components: {
+      VHeader,
+      Tab
+    }
+  };
 </script>
 
-<style rel='stylesheet/scss' lang='scss'>
-// @import './common/scss/index.scss';
+<style scoped rel='stylesheet/scss' lang='scss'>
 
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
 </style>
