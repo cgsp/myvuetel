@@ -1,7 +1,6 @@
 <template>
   <transition name="slide">
-    <div class="singer-detail">
-    </div>
+    <music-list :songs="songs" :title="singer.name" :bg-image="singer.avatar"></music-list>
   </transition>
 </template>
 
@@ -21,6 +20,8 @@
   import {
     createSong
   } from '@js/song';
+
+  import MusicList from '@VBusiness/music-list';
 
   export default {
     name: 'SingerDetail',
@@ -64,10 +65,10 @@
         });
 
         return temp;
-      },
-      _back() {
-        this.$router.back();
       }
+    },
+    components: {
+      MusicList
     }
   };
 </script>
@@ -82,15 +83,5 @@
   .slide-enter,
   .slide-leave-to {
     transform: translate3d(100%, 0, 0)
-  }
-
-  .singer-detail {
-    position: fixed;
-    z-index: 100;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: $color-background;
   }
 </style>
