@@ -1,5 +1,5 @@
-import { myJsonp } from '@js/myJsonp';
-import { myAxios } from '@js/myAxios';
+import { myJsonp } from '@utils/myJsonp';
+import { myAxios } from '@utils/myAxios';
 import { commonParams, options } from './config';
 const dev = process.env.NODE_ENV !== 'production';
 

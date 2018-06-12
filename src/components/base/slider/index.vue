@@ -13,7 +13,7 @@
 <script type='text/ecmascript-6'>
   import {
     addClass
-  } from '@js/myDom';
+  } from '@utils/myDom';
   import BScroll from 'better-scroll';
   const COMPONENT_NAME = 'Slider';
 

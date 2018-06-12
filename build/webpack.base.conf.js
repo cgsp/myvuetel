@@ -41,6 +41,7 @@ module.exports = {
       '@imgs': path.resolve(__dirname, '../src/common/imgs'),
       '@scss': path.resolve(__dirname, '../src/common/scss'),
       '@js': path.resolve(__dirname, '../src/common/js'),
+      '@utils': path.resolve(__dirname, '../src/common/utils'),
       '@VBusiness': path.resolve(__dirname, '../src/components/business'),
       '@VBase': path.resolve(__dirname, '../src/components/base'),
       '@VDashboard': path.resolve(__dirname, '../src/components/dashboard'),

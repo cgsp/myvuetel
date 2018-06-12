@@ -1,22 +1,35 @@
 <template>
   <div class="recommend">
-    <div class="recommend-content">
-      <div class="slider-wrapper">
-        <slider v-if="sliders.length">
-          <div v-for="item in sliders" :key="item.id">
-            <a :href="item.linkUrl">
-              <img :src="item.picUrl" alt="图片加载失败...">
-            </a>
-          </div>
-        </slider>
+    <scroll class="recommend-content" ref="scroll" :data="discList">
+      <div>
+        <div class="slider-wrapper">
+          <slider v-if="sliders.length">
+            <div v-for="item in sliders" :key="item.id">
+              <a :href="item.linkUrl">
+                <img :src="item.picUrl" alt="图片加载失败..." @load="imgLoad">
+              </a>
+            </div>
+          </slider>
+        </div>
+        <div class="recommend-list">
+          <h1 class="list-title">热门歌单推荐</h1>
+          <ul>
+            <li v-for="(item, index) in discList" class="item" :key="index">
+              <div class="icon">
+                <img width="60" height="60" v-lazy="item.imgurl" alt="图片加载中...">
+              </div>
+              <div class="text">
+                <h2 class="name" v-html="item.creator.name"></h2>
+                <p class="desc" v-html="item.dissname"></p>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="recommend-list">
-        <h1 class="list-title">热门歌单推荐</h1>
-        <ul>
-
-        </ul>
+      <div class="load-container" v-if="!discList.length">
+        <loading :title="'拼命加载中...'"></loading>
       </div>
-    </div>
+    </scroll>
   </div>
 </template>
 
@@ -29,18 +42,20 @@
     ERR_OK
   } from '@api/config';
   import Slider from '@VBase/slider';
+  import Scroll from '@VBase/scroll';
+  import Loading from '@VBase/loading';
 
   export default {
     name: 'Recommend',
     data() {
       return {
-        sliders: []
+        sliders: [],
+        discList: []
       };
     },
     created() {
       this._getRecommend();
-      getDiscList()
-        .then(res => console.log(res));
+      this._getDiscList();
     },
     methods: {
       _getRecommend() {
@@ -49,10 +64,26 @@
             this.sliders = res.data.slider;
           }
         });
+      },
+      _getDiscList() {
+        getDiscList()
+          .then(res => {
+            if (res.code === ERR_OK) {
+              this.discList = res.data.list;
+            }
+          });
+      },
+      imgLoad() {
+        if (!this.checked) {
+          this.$refs.scroll.refresh();
+          this.checked = true;
+        }
       }
     },
     components: {
-      Slider
+      Slider,
+      Scroll,
+      Loading
     }
   };
 </script>
@@ -74,14 +105,48 @@
         padding-top: 40%;
         overflow: hidden;
       }
-    }
-    .recommend-list {
-      .list-title {
-        height: 65px;
-        line-height: 65px;
-        text-align: center;
-        font-size: $font-size-medium;
-        color: $color-theme;
+      .recommend-list {
+        .list-title {
+          height: 65px;
+          line-height: 65px;
+          text-align: center;
+          font-size: $font-size-medium;
+          color: $color-theme;
+        }
+        .item {
+          display: flex;
+          box-sizing: border-box;
+          align-items: flex-start;
+          padding: 0 20px 20px 20px;
+          .icon {
+            flex: 0 0 60px;
+            width: 60px;
+            padding-right: 20px;
+          }
+          .text {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            line-height: 20px;
+            overflow: hidden;
+            font-size: $font-size-medium;
+            .name {
+              margin-bottom: 10px;
+              color: $color-text;
+            }
+            .desc {
+              color: $color-text-d;
+            }
+          }
+        }
+      }
+      .load-container {
+        width: 100%;
+        height: calc(60%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
   }

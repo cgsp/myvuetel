@@ -7,10 +7,15 @@ import App from './App';
 import router from './router';
 
 import '@scss/index.scss';
+import VueLazyLoad from 'vue-lazyload';
 
 Vue.config.productionTip = false;
 
 fastclick.attach(document.body);
+
+Vue.use(VueLazyLoad, {
+  loading: require('@imgs/lazy.png')
+});
 
 /* eslint-disable no-new */
 new Vue({
