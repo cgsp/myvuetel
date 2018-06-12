@@ -1,7 +1,10 @@
 <template>
-  <div class="singer">
-    singer
-  </div>
+  <transition name="slide">
+    <div class="singer">
+      <listview :data="singers" @selectItem="selectSinger"></listview>
+      <router-view></router-view>
+    </div>
+  </transition>
 </template>
 
 <script type='text/ecmascript-6'>
@@ -12,8 +15,12 @@
     ERR_OK
   } from '@api/config';
   import Singer from '@js/singer';
+  import Listview from '@VBase/listview';
+  import {
+    mapMutations
+  } from 'vuex';
 
-  const HOT_TITLE = '热门';
+  const HOT_TITLE = '热';
   const HOT_LENGTH = 10;
   export default {
     name: 'Singer',
@@ -26,13 +33,20 @@
       this._getSingerList();
     },
     methods: {
+      selectSinger(singer) {
+        // console.log(singer);
+        this.$router.push(`/singer/${singer.id}`);
+        // this.$router.push({
+        //   path: `/singer/${singer.id}`
+        // });
+        this.setSinger(singer);
+      },
       _getSingerList() {
         getSingerList()
           .then((res) => {
             if (res.code === ERR_OK) {
-              this.singers = res.data.list;
+              this.singers = this._normalLizeSinger(res.data.list);
               // console.log(this.singers);
-              console.log(this._normalLizeSinger(this.singers));
             }
           });
       },
@@ -87,13 +101,29 @@
         });
 
         return hot.concat(ret);
-      }
+      },
+      ...mapMutations({
+        setSinger: 'SET_SINGER'
+      })
+    },
+    components: {
+      Listview
     }
   };
 </script>
 
 <style scoped rel='stylesheet/scss' lang='scss'>
   @import "@scss/variable.scss";
+  .slide-leave-active,
+  .slide-enter-active {
+    transition: all .3s;
+  }
+
+  .slide-leave-to,
+  .slide-enter {
+    transform: translate3d(-100%, 0, 0);
+  }
+
   .singer {
     position: fixed;
     top: 88px;

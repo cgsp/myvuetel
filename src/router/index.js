@@ -4,6 +4,7 @@ import Rank from '@VBusiness/rank';
 import Recommend from '@VBusiness/recommend';
 import Singer from '@VBusiness/singer';
 import Search from '@VBusiness/search';
+import SingerDetail from '@VBusiness/singer-detail';
 Vue.use(Router);
 
 const router = new Router({
@@ -18,7 +19,13 @@ const router = new Router({
     },
     {
       path: '/singer',
-      component: Singer
+      component: Singer,
+      children: [
+        {
+          path: ':id',
+          component: SingerDetail
+        }
+      ]
     },
     {
       path: '/search',
