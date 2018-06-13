@@ -5,22 +5,24 @@
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
+    <player></player>
   </div>
 </template>
 
 <script type='text/ecmascript-6'>
-  import VHeader from '@VDashboard/header';
-  import Tab from '@VDashboard/tab';
+import VHeader from '@VDashboard/header';
+import Tab from '@VDashboard/tab';
+import Player from '@VDashboard/player';
 
-  export default {
-    name: 'App',
-    components: {
-      VHeader,
-      Tab
-    }
-  };
+export default {
+  name: 'App',
+  components: {
+    VHeader,
+    Tab,
+    Player
+  }
+};
 </script>
 
 <style scoped rel='stylesheet/scss' lang='scss'>
-
 </style>
