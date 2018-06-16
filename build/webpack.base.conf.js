@@ -43,7 +43,7 @@ module.exports = {
       '@js': path.resolve(__dirname, '../src/common/js'),
       '@utils': path.resolve(__dirname, '../src/common/utils'),
       '@VBusiness': path.resolve(__dirname, '../src/components/business'),
-      '@VBase': path.resolve(__dirname, '../src/components/base'),
+      '@VBase': path.resolve(__dirname, '../src/base'),
       '@VDashboard': path.resolve(__dirname, '../src/components/dashboard'),
     }
   },

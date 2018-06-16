@@ -14,8 +14,8 @@
         </div>
         <div class="middle">
           <div class="middle-l">
-            <div class="cd-wrapper">
-              <div class="cd">
+            <div class="cd-wrapper" ref="cdWrapper">
+              <div class="cd" :class="isRotate">
                 <img class="image" :src="currentSong.image">
               </div>
             </div>
@@ -36,26 +36,27 @@
             <span class="dot"></span>
           </div>
           <div class="progress-wrapper">
-            <span class="time time-l"></span>
+            <span class="time time-l">{{newCurrentTime}}</span>
             <div class="progress-bar-wrapper">
+
             </div>
-            <span class="time time-r"></span>
+            <span class="time time-r">{{duration}}</span>
           </div>
           <div class="operators">
-            <div class="icon i-left">
+            <div class="icon i-left" :class="disable">
               <i class="icon-sequence"></i>
             </div>
-            <div class="icon i-left">
+            <div class="icon i-left" @click="prev" :class="disable">
               <i class="icon-prev"></i>
             </div>
-            <div class="icon i-center">
-              <i class="icon-play"></i>
+            <div class="icon i-center" @click="togglePlay" :class="disable">
+              <i :class="playIcon"></i>
             </div>
-            <div class="icon i-right">
+            <div class="icon i-right" @click="next" :class="disable">
               <i class="icon-next"></i>
             </div>
             <div class="icon i-right">
-              <i class="icon icon-not-favorite"></i>
+              <i class="icon icon-not-favorite" :class="disable"></i>
             </div>
           </div>
         </div>
@@ -64,32 +65,63 @@
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen" @click="toNormal">
         <div class="icon">
-          <img width="40" height="40" :src="currentSong.image">
+          <img width="40" height="40" :src="currentSong.image" :class="isRotate">
         </div>
         <div class="text">
           <h2 class="name">{{currentSong.name}}</h2>
           <p class="desc">{{currentSong.singer}}</p>
         </div>
-        <div class="control"></div>
+        <div class="control" @click.stop="togglePlay">
+          <i :class="playIcon"></i>
+        </div>
         <div class="control">
           <i class="icon-playlist"></i>
         </div>
       </div>
     </transition>
+    <audio ref="audio" :src="currentSong.url" @canplay="canplay" @error="error" @timeupdate="timeupdate"></audio>
   </div>
 </template>
 
 <script type='text/ecmascript-6'>
 import { mapGetters, mapMutations } from 'vuex';
-// import createAnimations from 'create-keyframe-animation';
+import createAnimations from 'create-keyframe-animation';
+import { prefixStyle } from '@utils/myDom';
+import { myTransSecondsToTime } from '@utils/myTime';
+
+const transform = prefixStyle('transform');
 
 export default {
   name: 'Player',
   computed: {
-    ...mapGetters(['fullScreen', 'playList', 'currentSong'])
+    isRotate() {
+      return this.playing ? 'play' : 'play pause';
+    },
+    playIcon() {
+      return this.playing ? 'icon-pause' : 'icon-play';
+    },
+    disable() {
+      return this.songReady ? '' : 'disable';
+    },
+    newCurrentTime() {
+      return myTransSecondsToTime(this.currentTime);
+    },
+    duration() {
+      return myTransSecondsToTime(this.currentSong.duration);
+    },
+    ...mapGetters([
+      'fullScreen',
+      'playList',
+      'currentSong',
+      'playing',
+      'currentIndex'
+    ])
   },
   data() {
-    return {};
+    return {
+      songReady: false,
+      currentTime: 0
+    };
   },
   methods: {
     toMini() {
@@ -99,45 +131,117 @@ export default {
       this.setFullScreen(true);
     },
     enter(ele, done) {
-      // const { x, y, scale } = this._getPosAndScale();
-      // let animation = {
-      //   0: {
-      //     transform: `translate3d(${x}px,${y}px,0) scale(${scale})`
-      //   },
-      //   60: {
-      //     transform: 'translate3d(0,0,0) scale(1.1)'
-      //   },
-      //   100: {
-      //     transform: 'translate3d(0,0,0) scale(1)'
-      //   }
-      // };
+      const { x, y, scale } = this._getPosAndScale();
+      let animation = {
+        0: {
+          transform: `translate3d(${x}px,${y}px,0) scale(${scale})`
+        },
+        60: {
+          transform: 'translate3d(0,0,0) scale(1.3)'
+        },
+        100: {
+          transform: 'translate3d(0,0,0) scale(1)'
+        }
+      };
+
+      // 注册动画
+      createAnimations.registerAnimation({
+        name: 'move',
+        animation,
+        presets: {
+          duration: 800,
+          easing: 'linear'
+        }
+      });
+
+      // 执行动画，并且进入afterEnter回调
+      createAnimations.runAnimation(this.$refs.cdWrapper, 'move', done);
     },
-    afterEnter() {},
-    leave(ele, done) {},
-    afterLeave() {},
+    afterEnter() {
+      // 取消注册
+      createAnimations.unregisterAnimation('move');
+      this.$refs.cdWrapper.style.animation = '';
+    },
+    leave(ele, done) {
+      this.$refs.cdWrapper.style.transition = 'all .8s';
+      const { x, y, scale } = this._getPosAndScale();
+      this.$refs.cdWrapper.style[transform] = `translate3d(${x}px,${y}px,0) scale(${scale})`;
+      this.$refs.cdWrapper.addEventListener('transitionend', done);
+    },
+    afterLeave() {
+      this.$refs.cdWrapper.style.transition = '';
+      this.$refs.cdWrapper.style[transform] = '';
+    },
+    togglePlay() {
+      this.setPlayingState(!this.playing);
+    },
+    next() {
+      if (!this.songReady) {
+        return;
+      }
+      let index = this.currentIndex + 1;
+      if (index === this.playList.length) {
+        index = 0;
+      }
+      this.setCurrentIndex(index);
+      if (!this.playing) {
+        this.togglePlay();
+      }
+      this.songReady = false;
+    },
+    prev() {
+      if (!this.songReady) {
+        return;
+      }
+      let index = this.currentIndex - 1;
+      if (index === -1) {
+        index = this.playList.length - 1;
+      }
+      this.setCurrentIndex(index);
+      if (!this.playing) {
+        this.togglePlay();
+      }
+      this.songReady = false;
+    },
+    timeupdate(e) {
+      this.currentTime = e.target.currentTime;
+    },
+    canplay() {
+      this.songReady = true;
+    },
+    error() {
+      this.songReady = true;
+    },
     _getPosAndScale() {
       // 获取初始状态下，cd这个大圆，向cd的小圆，偏移的量，变小的量
-      const targetWidth = 40;
-      const paddingLeft = 40;
-      const paddingBottom = 30;
-      const paddingTop = 80;
+      const targetWidth = 40; // 小圆的宽度
+      const paddingLeft = 40; // 小圆距离左边的距离
+      const paddingBottom = 30; // 小圆圆心距离底部的距离
+      const paddingTop = 80; // 大圆圆心距离顶部的距离
       const cdWidth = window.innerWidth * 0.8;
       const scale = targetWidth / cdWidth;
       const x = -(window.innerWidth / 2 - paddingLeft);
       const y = window.innerHeight - paddingBottom - paddingTop - cdWidth / 2;
-      return {
-        x,
-        y,
-        scale
-      };
+      return { x, y, scale };
     },
     ...mapMutations({
-      setFullScreen: 'SET_FULL_SCREEN'
+      setFullScreen: 'SET_FULL_SCREEN',
+      setPlayingState: 'SET_PLAYING_STATE',
+      setCurrentIndex: 'SET_CURREENT_INDEX'
     })
   },
   watch: {
     currentSong(val) {
-      console.log(val);
+      this.$nextTick(() => {
+        const audio = this.$refs.audio;
+        audio.play();
+      });
+    },
+    playing(newPlaying) {
+      const audio = this.$refs.audio;
+      this.$nextTick(() => {
+        newPlaying ? audio.play() : audio.pause();
+      });
     }
   }
 };
@@ -334,7 +438,7 @@ export default {
           flex: 1;
           color: $color-theme;
           &.disable {
-            color: $color-theme-d;
+            color: #cccccc;
           }
           i {
             font-size: 30px;
@@ -411,8 +515,8 @@ export default {
       flex: 0 0 30px;
       width: 30px;
       padding: 15px 10px;
-      .icon-play-mini,
-      .icon-pause-mini,
+      .icon-play,
+      .icon-pause,
       .icon-playlist {
         font-size: 30px;
         color: $color-theme-d;
