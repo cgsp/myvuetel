@@ -36,3 +36,6 @@ module.exports = {
     'no-multiple-empty-lines': 0,
   }
 }
+
+/* eslint-disable no-unused-vars*/
+/* eslint-disable no-new*/

@@ -38,7 +38,7 @@
           <div class="progress-wrapper">
             <span class="time time-l">{{newCurrentTime}}</span>
             <div class="progress-bar-wrapper">
-
+              <progress-bar :percent="percent" @percentChange="percentChange"></progress-bar>
             </div>
             <span class="time time-r">{{duration}}</span>
           </div>
@@ -71,8 +71,10 @@
           <h2 class="name">{{currentSong.name}}</h2>
           <p class="desc">{{currentSong.singer}}</p>
         </div>
-        <div class="control" @click.stop="togglePlay">
-          <i :class="playIcon"></i>
+        <div class="control contorl-circle" @click.stop="togglePlay">
+          <progress-circle :radius="30" :percent="percent">
+            <i :class="playIcon" class="icon-mini"></i>
+          </progress-circle>
         </div>
         <div class="control">
           <i class="icon-playlist"></i>
@@ -88,6 +90,8 @@ import { mapGetters, mapMutations } from 'vuex';
 import createAnimations from 'create-keyframe-animation';
 import { prefixStyle } from '@utils/myDom';
 import { myTransSecondsToTime } from '@utils/myTime';
+import ProgressBar from '@VBase/progress-bar';
+import ProgressCircle from '@VBase/progress-circle';
 
 const transform = prefixStyle('transform');
 
@@ -108,6 +112,9 @@ export default {
     },
     duration() {
       return myTransSecondsToTime(this.currentSong.duration);
+    },
+    percent() {
+      return this.currentTime / this.currentSong.duration;
     },
     ...mapGetters([
       'fullScreen',
@@ -165,7 +172,9 @@ export default {
     leave(ele, done) {
       this.$refs.cdWrapper.style.transition = 'all .8s';
       const { x, y, scale } = this._getPosAndScale();
-      this.$refs.cdWrapper.style[transform] = `translate3d(${x}px,${y}px,0) scale(${scale})`;
+      this.$refs.cdWrapper.style[
+        transform
+      ] = `translate3d(${x}px,${y}px,0) scale(${scale})`;
       this.$refs.cdWrapper.addEventListener('transitionend', done);
     },
     afterLeave() {
@@ -212,6 +221,18 @@ export default {
     error() {
       this.songReady = true;
     },
+    percentChange(percent) {
+      if (percent >= 1) {
+        this.next();
+        return;
+      }
+
+      // 如果是暂停的话, 只要一拖动，就播放
+      if (!this.playing) {
+        this.togglePlay();
+      }
+      this.$refs.audio.currentTime = percent * this.currentSong.duration;
+    },
     _getPosAndScale() {
       // 获取初始状态下，cd这个大圆，向cd的小圆，偏移的量，变小的量
       const targetWidth = 40; // 小圆的宽度
@@ -243,6 +264,10 @@ export default {
         newPlaying ? audio.play() : audio.pause();
       });
     }
+  },
+  components: {
+    ProgressBar,
+    ProgressCircle
   }
 };
 </script>
@@ -522,11 +547,14 @@ export default {
         color: $color-theme-d;
       }
       .icon-mini {
-        font-size: 32px;
+        font-size: 29px;
         position: absolute;
         left: 0;
-        top: 0;
+        top: 1px;
       }
+    }
+    .contorl-circle {
+      padding: 7px 10px 0px 10px;
     }
   }
   @keyframes rotate {
