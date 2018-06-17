@@ -35,6 +35,7 @@ export default class Song {
         if (res.retcode === ERR_OK) {
           // base64转码
           this.lyric = Base64.decode(res.lyric);
+          // console.log(this.lyric);
           resolve(this.lyric);
         }
       });
@@ -81,5 +82,5 @@ export function filterSinger(singer) {
 };
 
 // function isValidMusic(musicData) {
-//   return musicData.songid && musicData.albummid && (!musicData.pay || musicData.pay.payalbumprice === 0)
+//   return musicData.songid && musicData.albummid && (!musicData.pay || musicData.pay.payalbumprice === 0);
 // };

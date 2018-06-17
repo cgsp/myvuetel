@@ -9,7 +9,7 @@
       <div class="filter" ref="filter"></div>
       <!-- 开始播放按钮 -->
       <div class="play-wrapper">
-        <div class="play" v-show="songs.length" ref="playBtn">
+        <div class="play" v-show="songs.length" ref="playBtn" @click="random">
           <i class="icon-play"></i>
           <span class="text">随机播放全部</span>
         </div>
@@ -87,7 +87,12 @@ export default {
         index
       });
     },
-    ...mapActions(['selectPlay'])
+    random() {
+      this.randomPlay({
+        list: this.songs
+      });
+    },
+    ...mapActions(['selectPlay', 'randomPlay'])
   },
   mounted() {
     this.bgImageHeight = this.$refs.bgImage.clientHeight;

@@ -55,7 +55,8 @@ export default {
     progressClick(e) {
       // console.log(e.pageX);
       // console.log(e.offsetX);
-      this._offet(e.offsetX);
+      const left = this.$refs.box.getBoundingClientRect().left;
+      this._offet(e.pageX - left);
       this._triggerPercent();
     },
     _offet(offSetWidth) {
