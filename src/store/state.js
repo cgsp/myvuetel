@@ -9,7 +9,9 @@ const state = {
   // 顺序播放的列表
   sequenceList: [],
   mode: playMode.sequence,
-  currentIndex: -1
+  currentIndex: -1,
+  recommendDetail: {},
+  rankDetail: {}
 };
 
 export default state;

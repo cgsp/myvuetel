@@ -96,7 +96,7 @@ import ProgressBar from '@VBase/progress-bar';
 import ProgressCircle from '@VBase/progress-circle';
 import { playMode } from '@js/config';
 import LyricParser from 'lyric-parser';
-import { ERR_OK } from '@api/config';
+// import { ERR_OK } from '@api/config';
 import Scroll from '@VBase/scroll';
 
 const transform = prefixStyle('transform');
@@ -193,9 +193,7 @@ export default {
     leave(ele, done) {
       this.$refs.cdWrapper.style.transition = 'all .8s';
       const { x, y, scale } = this._getPosAndScale();
-      this.$refs.cdWrapper.style[
-        transform
-      ] = `translate3d(${x}px,${y}px,0) scale(${scale})`;
+      this.$refs.cdWrapper.style[transform] = `translate3d(${x}px,${y}px,0) scale(${scale})`;
       this.$refs.cdWrapper.addEventListener('transitionend', done);
     },
     afterLeave() {
@@ -296,9 +294,7 @@ export default {
       const offset = Math.min(0, Math.max(-window.innerWidth, left + deltaX));
       this.touches.percent = Math.abs(offset / window.innerWidth);
       // 移动的时候的滚动是实时的，所以过渡时间是0s
-      this.$refs.lyricList.$el.style[
-        transform
-      ] = `translate3d(${offset}px,0,0)`;
+      this.$refs.lyricList.$el.style[transform] = `translate3d(${offset}px,0,0)`;
       this.$refs.lyricList.$el.style[transitionDuration] = '0s';
       this.$refs.middleL.style.opacity = 1 - this.touches.percent;
       this.$refs.middleL.style[transitionDuration] = '0s';
@@ -328,9 +324,7 @@ export default {
       }
       // 移动的时候的滚动是带过渡效果的，所以过渡时间是.3s
       this.$refs.lyricList.$el.style[transitionDuration] = '.3s';
-      this.$refs.lyricList.$el.style[
-        transform
-      ] = `translate3d(${offset}px,0,0)`;
+      this.$refs.lyricList.$el.style[transform] = `translate3d(${offset}px,0,0)`;
       this.$refs.middleL.style.opacity = opacity;
       this.$refs.middleL.style[transitionDuration] = '.3s';
     },

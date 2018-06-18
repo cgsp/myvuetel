@@ -17,3 +17,7 @@ export const currentSong = (state) => {
   // 不能直接写currentIndex
   return state.playList[state.currentIndex] || {};
 };
+
+export const recommendDetail = state => state.recommendDetail;
+
+export const rankDetail = state => state.rankDetail;

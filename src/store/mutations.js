@@ -27,6 +27,14 @@ const mutations = {
 
   [types.SET_CURREENT_INDEX](state, currentIndex) {
     state.currentIndex = currentIndex;
+  },
+
+  [types.SET_RECOMMEND_DETAIL](state, recommendDetail) {
+    state.recommendDetail = recommendDetail;
+  },
+
+  [types.SET_RANK_DETAIL](state, rankDetail) {
+    state.rankDetail = rankDetail;
   }
 };
 

@@ -22,7 +22,7 @@
     <!-- scroll节点一定要定高度 -->
     <scroll @scroll="scroll" :data="songs" :probe-type="probeType" :listen-scroll="listenScroll" class="list" ref="list">
       <div class="song-list-wrapper">
-        <song-list @clickSong="clickSong" :songs="songs"></song-list>
+        <song-list :rank="rank" @clickSong="clickSong" :songs="songs"></song-list>
       </div>
       <div class="loading-container" v-show="!songs.length">
         <loading :title="'拼命加载中...'"></loading>
@@ -38,12 +38,14 @@ import Loading from '@VBase/loading';
 
 import { prefixStyle } from '@utils/myDom';
 import { mapActions } from 'vuex';
+import { playListMixin } from '@js/mixin';
 
 const transform = prefixStyle('transform');
 const backdrop = prefixStyle('backdrop-filter');
 
 export default {
   name: 'MusicList',
+  mixins: [playListMixin],
   created() {
     this.probeType = 3;
     this.listenScroll = true;
@@ -62,6 +64,10 @@ export default {
     title: {
       type: String,
       default: ''
+    },
+    rank: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -91,6 +97,12 @@ export default {
       this.randomPlay({
         list: this.songs
       });
+    },
+    handlePlayList(playList) {
+      const bottomHeight = playList.length > 0 ? '60px' : '0px';
+      const scroll = this.$refs.list;
+      scroll.$el.style.bottom = bottomHeight;
+      scroll.refresh();
     },
     ...mapActions(['selectPlay', 'randomPlay'])
   },

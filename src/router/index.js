@@ -1,7 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Rank from '@VBusiness/rank';
+import RankDetail from '@VBusiness/rank-detail';
 import Recommend from '@VBusiness/recommend';
+import RecommendDetail from '@VBusiness/recommend-detail';
 import Singer from '@VBusiness/singer';
 import Search from '@VBusiness/search';
 import SingerDetail from '@VBusiness/singer-detail';
@@ -15,7 +17,13 @@ const router = new Router({
     },
     {
       path: '/rank',
-      component: Rank
+      component: Rank,
+      children: [
+        {
+          path: ':id',
+          component: RankDetail
+        }
+      ]
     },
     {
       path: '/singer',
@@ -33,7 +41,13 @@ const router = new Router({
     },
     {
       path: '/recommend',
-      component: Recommend
+      component: Recommend,
+      children: [
+        {
+          path: ':id',
+          component: RecommendDetail
+        }
+      ]
     }
   ]
 });
