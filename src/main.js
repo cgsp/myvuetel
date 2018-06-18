@@ -14,6 +14,12 @@ Vue.config.productionTip = false;
 
 fastclick.attach(document.body);
 
+// document.addEventListener('touchmove', function (event) {
+//   event.preventDefault();
+//   // handle move
+// }, false);
+
+
 Vue.use(VueLazyLoad, {
   loading: require('@imgs/lazy.png'),
   preLoad: 1.3,
