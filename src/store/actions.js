@@ -1,6 +1,7 @@
 import * as types from './mutation-types';
 import { playMode } from '@js/config';
 import { myShuffle } from '@utils/myHandleArr';
+import { saveSearch, deleteSearch, clearSearch } from '@js/cache';
 
 function findIndex(list, song) {
   return list.findIndex(item => {
@@ -34,5 +35,64 @@ export const randomPlay = function ({ commit, state }, { list }) {
   commit(types.SET_CURREENT_INDEX, 0);
   commit(types.SET_FULL_SCREEN, true);
   commit(types.SET_PLAYING_STATE, true);
+};
+
+export const insertSong = function ({ commit, state }, song) {
+  let playList = state.playList.slice();
+  let sequenceList = state.sequenceList.slice();
+  let currentIndex = state.currentIndex;
+  // 记录下当前的歌曲
+  let currentSong = playList[currentIndex];
+
+  // 查找当前列表中，是否有这首歌，有的话返回索引，没的话，返回-1
+  let fpIndex = findIndex(playList, song);
+
+  // 因为是插入歌曲，所以索引要+1
+  currentIndex++;
+  playList.splice(currentIndex, 0, song);
+
+  if (fpIndex > -1) {
+    // 如果本来有这首歌
+    if (currentIndex > fpIndex) {
+      // 当前播放的歌曲，在这首歌的后面
+      playList.splice(fpIndex, 1);
+      currentIndex--;
+    } else {
+      // 当前播放的歌曲，在这首歌的前面
+      playList.splice(fpIndex + 1, 1);
+    }
+  }
+
+  // 在当前sequenceList里面的索引
+  let currentSIndex = findIndex(sequenceList, currentSong) + 1;
+  let fsIndex = findIndex(sequenceList, song);
+
+  sequenceList.splice(currentSIndex, 0, song);
+
+  if (fsIndex > -1) {
+    if (currentSIndex > fsIndex) {
+      sequenceList.splice(fsIndex, 1);
+    } else {
+      sequenceList.splice(fsIndex + 1, 1);
+    }
+  }
+
+  commit(types.SET_PLAY_LIST, playList);
+  commit(types.SET_SEQUENCE_LIST, sequenceList);
+  commit(types.SET_CURREENT_INDEX, currentIndex);
+  commit(types.SET_FULL_SCREEN, true);
+  commit(types.SET_PLAYING_STATE, true);
+};
+
+export const saveSearchHistory = function ({ commit, state }, query) {
+  commit(types.SET_SEARCH_HISTORY, saveSearch(query));
+};
+
+export const deleteSearchHistory = function ({ commit, state }, query) {
+  commit(types.SET_SEARCH_HISTORY, deleteSearch(query));
+};
+
+export const clearSearchHistory = function ({ commit, state }) {
+  commit(types.SET_SEARCH_HISTORY, clearSearch());
 };
 

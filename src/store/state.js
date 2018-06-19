@@ -1,4 +1,5 @@
 import { playMode } from '@js/config';
+import { loadSearch } from '@js/cache';
 
 const state = {
   singer: {},
@@ -11,7 +12,8 @@ const state = {
   mode: playMode.sequence,
   currentIndex: -1,
   recommendDetail: {},
-  rankDetail: {}
+  rankDetail: {},
+  searchHistory: loadSearch()
 };
 
 export default state;

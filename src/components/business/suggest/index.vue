@@ -1,8 +1,8 @@
 <template>
-  <scroll class="suggest" :data="searchResults" :upPullRefresh="true" @toBottomEnd="pullToEnd" :downPullRefresh="true" @toUpEnd="toUpEnd" ref="suggest">
+  <scroll class="suggest" :data="searchResults" :upPullRefresh="true" @toBottomEnd="pullToEnd" :downPullRefresh="true" @toUpEnd="toUpEnd" :beforeScroll="true" @startScroll="startScroll" ref="suggest">
     <ul class="suggest-list">
       <loading v-show="loadAgain" :title="'重新加载...'"></loading>
-      <li class="suggest-item" v-for="(item, index) in searchResults" :key="index">
+      <li class="suggest-item" v-for="(item, index) in searchResults" :key="index" @click="selectItem(item)">
         <div class="icon">
           <i :class="getIconClass(item)"></i>
         </div>
@@ -26,6 +26,8 @@ import { createSong } from '@js/song';
 import Scroll from '@VBase/scroll';
 import Loading from '@VBase/loading';
 import NoResult from '@VBase/no-result';
+import Singer from '@js/singer';
+import { mapMutations, mapActions } from 'vuex';
 export default {
   name: 'Suggest',
   props: {
@@ -50,6 +52,24 @@ export default {
     };
   },
   methods: {
+    startScroll() {
+      this.$emit('startScroll');
+    },
+    selectItem(item) {
+      if (item.type === 'singer') {
+        const singer = new Singer({
+          id: item.singermid,
+          name: item.singername
+        });
+        this.$router.push({
+          path: `/search/${singer.id}`
+        });
+        this.setSinger(singer);
+      } else {
+        this.insertSong(item);
+      }
+      this.$emit('select');
+    },
     // 下拉加载更多
     pullToEnd() {
       // 如果下拉到底了，就不加载了
@@ -126,7 +146,11 @@ export default {
       });
 
       return ret;
-    }
+    },
+    ...mapMutations({
+      setSinger: 'SET_SINGER'
+    }),
+    ...mapActions(['insertSong'])
   },
   watch: {
     query() {

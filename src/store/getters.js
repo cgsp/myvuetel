@@ -21,3 +21,5 @@ export const currentSong = (state) => {
 export const recommendDetail = state => state.recommendDetail;
 
 export const rankDetail = state => state.rankDetail;
+
+export const searchHistory = state => state.searchHistory;

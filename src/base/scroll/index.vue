@@ -32,6 +32,10 @@ export default {
     downPullRefresh: {
       type: Boolean,
       default: false
+    },
+    beforeScroll: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {
@@ -74,6 +78,13 @@ export default {
           if (this.scroll.y - 0 === 0) {
             this.$emit('toUpEnd');
           }
+        });
+      }
+
+      // 开始滚动的话，告诉外界
+      if (this.beforeScroll) {
+        this.scroll.on('beforeScrollStart', () => {
+          this.$emit('startScroll');
         });
       }
     },
