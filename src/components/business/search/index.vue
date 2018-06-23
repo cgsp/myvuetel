@@ -27,7 +27,7 @@
       </scroll>
     </div>
     <div ref="searchResult" class="search-result" v-show="query">
-      <suggest :query="query" @startScroll="startScroll" @select="saveSearch"></suggest>
+      <suggest :query="query" @startScroll="startScroll" @select="saveSearch" ref="suggest"></suggest>
     </div>
     <confirm :text="'确定情况吗？'" @confirm="confirm" ref="confirm"></confirm>
     <top-tip :delay="delay" ref="topTip">
@@ -71,8 +71,11 @@ export default {
   methods: {
     handlePlayList(playList) {
       const bottomHeight = playList.length > 0 ? '60px' : '0px';
+      // 2个地方都需要refresh
       this.$refs.shortCutWrapper.style.bottom = bottomHeight;
       this.$refs.shortcut.refresh();
+      this.$refs.searchResult.style.bottom = bottomHeight;
+      this.$refs.suggest.refresh();
     },
     clearAll() {
       this.$refs.confirm.show();

@@ -77,20 +77,23 @@
             <i :class="playIcon" class="icon-mini"></i>
           </progress-circle>
         </div>
-        <div class="control">
+        <div class="control" @click.stop="showPlayList">
           <i class="icon-playlist"></i>
         </div>
       </div>
     </transition>
+    <!-- 播放列表组件 -->
+    <play-list ref="playList"></play-list>
     <audio ref="audio" :src="currentSong.url" @canplay="canplay" @error="error" @timeupdate="timeupdate" @ended="end"></audio>
   </div>
 </template>
 
 <script type='text/ecmascript-6'>
-import { mapGetters, mapMutations } from 'vuex';
+// import { mapGetters, mapMutations } from 'vuex';
 import createAnimations from 'create-keyframe-animation';
 import { prefixStyle } from '@utils/myDom';
-import { myShuffle } from '@utils/myHandleArr';
+// 放到mixin中
+// import { myShuffle } from '@utils/myHandleArr';
 import { myTransSecondsToTime } from '@utils/myTime';
 import ProgressBar from '@VBase/progress-bar';
 import ProgressCircle from '@VBase/progress-circle';
@@ -98,12 +101,15 @@ import { playMode } from '@js/config';
 import LyricParser from 'lyric-parser';
 // import { ERR_OK } from '@api/config';
 import Scroll from '@VBase/scroll';
+import PlayList from '@VBusiness/play-list';
+import { playerMixin } from '@js/mixin';
 
 const transform = prefixStyle('transform');
 const transitionDuration = prefixStyle('transitionDuration');
 
 export default {
   name: 'Player',
+  mixins: [playerMixin],
   created() {
     this.touches = {};
   },
@@ -125,21 +131,22 @@ export default {
     },
     percent() {
       return this.currentTime / this.currentSong.duration;
-    },
-    iconMode() {
-      return this.mode === playMode.sequence
-        ? 'icon-sequence'
-        : this.mode === playMode.loop ? 'icon-loop' : 'icon-random';
-    },
-    ...mapGetters([
-      'fullScreen',
-      'playList',
-      'currentSong',
-      'playing',
-      'currentIndex',
-      'mode',
-      'sequenceList'
-    ])
+    }
+    // 放到mixin中
+    // iconMode() {
+    //   return this.mode === playMode.sequence
+    //     ? 'icon-sequence'
+    //     : this.mode === playMode.loop ? 'icon-loop' : 'icon-random';
+    // },
+    // ...mapGetters([
+    //   'fullScreen',
+    //   'playList',
+    //   'currentSong',
+    //   'playing',
+    //   'currentIndex',
+    //   'mode',
+    //   'sequenceList'
+    // ])
   },
   data() {
     return {
@@ -152,6 +159,9 @@ export default {
     };
   },
   methods: {
+    showPlayList() {
+      this.$refs.playList.show();
+    },
     toMini() {
       this.setFullScreen(false);
     },
@@ -193,7 +203,9 @@ export default {
     leave(ele, done) {
       this.$refs.cdWrapper.style.transition = 'all .8s';
       const { x, y, scale } = this._getPosAndScale();
-      this.$refs.cdWrapper.style[transform] = `translate3d(${x}px,${y}px,0) scale(${scale})`;
+      this.$refs.cdWrapper.style[
+        transform
+      ] = `translate3d(${x}px,${y}px,0) scale(${scale})`;
       this.$refs.cdWrapper.addEventListener('transitionend', done);
     },
     afterLeave() {
@@ -294,7 +306,9 @@ export default {
       const offset = Math.min(0, Math.max(-window.innerWidth, left + deltaX));
       this.touches.percent = Math.abs(offset / window.innerWidth);
       // 移动的时候的滚动是实时的，所以过渡时间是0s
-      this.$refs.lyricList.$el.style[transform] = `translate3d(${offset}px,0,0)`;
+      this.$refs.lyricList.$el.style[
+        transform
+      ] = `translate3d(${offset}px,0,0)`;
       this.$refs.lyricList.$el.style[transitionDuration] = '0s';
       this.$refs.middleL.style.opacity = 1 - this.touches.percent;
       this.$refs.middleL.style[transitionDuration] = '0s';
@@ -324,7 +338,9 @@ export default {
       }
       // 移动的时候的滚动是带过渡效果的，所以过渡时间是.3s
       this.$refs.lyricList.$el.style[transitionDuration] = '.3s';
-      this.$refs.lyricList.$el.style[transform] = `translate3d(${offset}px,0,0)`;
+      this.$refs.lyricList.$el.style[
+        transform
+      ] = `translate3d(${offset}px,0,0)`;
       this.$refs.middleL.style.opacity = opacity;
       this.$refs.middleL.style[transitionDuration] = '.3s';
     },
@@ -343,28 +359,29 @@ export default {
         this.currentLyric.seek(percent * this.currentSong.duration * 1000);
       }
     },
-    changeMode() {
-      const mode = (this.mode + 1) % 3;
-      this.setPlayMode(mode);
-      let list = null;
-      if (mode === playMode.random) {
-        list = myShuffle(this.sequenceList);
-      } else {
-        list = this.sequenceList;
-      }
+    // 放到mixin中
+    // changeMode() {
+    //   const mode = (this.mode + 1) % 3;
+    //   this.setPlayMode(mode);
+    //   let list = null;
+    //   if (mode === playMode.random) {
+    //     list = myShuffle(this.sequenceList);
+    //   } else {
+    //     list = this.sequenceList;
+    //   }
 
-      // 修改当前的播放列表
-      this.setPlayList(list);
-      // 修改当前的播放列表，但是希望当前播放的歌曲不变，也就是currentSong不变
-      this._resetCurrentyIndex(list);
-    },
-    _resetCurrentyIndex(list) {
-      let index = list.findIndex(item => {
-        return item.id === this.currentSong.id;
-      });
+    //   // 修改当前的播放列表
+    //   this.setPlayList(list);
+    //   // 修改当前的播放列表，但是希望当前播放的歌曲不变，也就是currentSong不变
+    //   this._resetCurrentyIndex(list);
+    // },
+    // _resetCurrentyIndex(list) {
+    //   let index = list.findIndex(item => {
+    //     return item.id === this.currentSong.id;
+    //   });
 
-      this.setCurrentIndex(index);
-    },
+    //   this.setCurrentIndex(index);
+    // },
     _getPosAndScale() {
       // 获取初始状态下，cd这个大圆，向cd的小圆，偏移的量，变小的量
       const targetWidth = 40; // 小圆的宽度
@@ -396,17 +413,21 @@ export default {
         this.$refs.lyricList.scrollTo(0, 0, 1000);
       }
       this.playingLyric = txt;
-    },
-    ...mapMutations({
-      setFullScreen: 'SET_FULL_SCREEN',
-      setPlayingState: 'SET_PLAYING_STATE',
-      setCurrentIndex: 'SET_CURREENT_INDEX',
-      setPlayMode: 'SET_PLAY_MODE',
-      setPlayList: 'SET_PLAY_LIST'
-    })
+    }
+    // 放到mixin中
+    // ...mapMutations({
+    //   setFullScreen: 'SET_FULL_SCREEN',
+    //   setPlayingState: 'SET_PLAYING_STATE',
+    //   setCurrentIndex: 'SET_CURREENT_INDEX',
+    //   setPlayMode: 'SET_PLAY_MODE',
+    //   setPlayList: 'SET_PLAY_LIST'
+    // })
   },
   watch: {
     currentSong(newSong, oldSong) {
+      if (!newSong.id) {
+        return;
+      }
       if (newSong.id === oldSong.id) {
         return;
       }
@@ -437,7 +458,8 @@ export default {
   components: {
     ProgressBar,
     ProgressCircle,
-    Scroll
+    Scroll,
+    PlayList
   }
 };
 </script>

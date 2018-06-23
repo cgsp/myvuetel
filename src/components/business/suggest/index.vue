@@ -52,6 +52,9 @@ export default {
     };
   },
   methods: {
+    refresh() {
+      this.$refs.suggest.refresh();
+    },
     startScroll() {
       this.$emit('startScroll');
     },

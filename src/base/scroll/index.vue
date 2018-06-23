@@ -17,6 +17,10 @@ export default {
       type: Boolean,
       default: true
     },
+    startY: {
+      type: Number,
+      default: 0
+    },
     data: {
       type: Array,
       default: null
@@ -50,7 +54,8 @@ export default {
       }
       this.scroll = new BScroll(this.$refs.wrapper, {
         probeType: this.probeType,
-        click: this.click
+        click: this.click,
+        startY: this.startY
       });
 
       // 如果需要监听滚动事件，就派发scroll事件给外界
@@ -99,9 +104,13 @@ export default {
     },
     scrollTo() {
       this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments);
+      // 用法
+      // this.$refs.scroll.scrollTo(0, -40 * index, 500);
     },
     scrollToElement() {
       this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments);
+      // 用法
+      // this.$ref.scroll.scrollToElement(this.$refs.listItems[index], 200);
     }
   },
   watch: {
