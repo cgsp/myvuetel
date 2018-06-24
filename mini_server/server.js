@@ -3,7 +3,7 @@
  * @Author: John.Guan
  * @Date: 2018-05-29 23:01:41
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-06-12 21:26:41
+ * @Last Modified time: 2018-06-24 11:53:27
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
@@ -97,7 +97,8 @@ apiRoutes.get('/lyric', function (req, res) {
   })
 })
 
-app.use('/api', apiRoutes);
+// app.use('/api', apiRoutes);
+app.use('', apiRoutes);
 
 
 

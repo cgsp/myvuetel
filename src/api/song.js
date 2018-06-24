@@ -6,7 +6,9 @@ import { getUid } from '@js/uid';
 const dev = process.env.NODE_ENV !== 'production';
 
 export function getLyric(mid) {
-  const url = dev ? '/api/lyric' : 'http://ustbhuangyi.com/music/api/lyric';
+  const url = dev ? 'lyric' : 'http://ustbhuangyi.com/music/api/lyric';
+  // const url = '/lyric';
+  // const url = dev ? '/api/lyric' : 'http://ustbhuangyi.com/music/api/lyric';
 
   const params = Object.assign({}, commonParams, {
     songmid: mid,

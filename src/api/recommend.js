@@ -17,7 +17,9 @@ function getRecommend() {
 function getDiscList() {
   // const url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg';
   // 上面的直接获取的方式是不行的，因为这个接口只允许reffer是QQ的服务器才能请求
-  const url = dev ? '/api/getDiscList' : 'http://ustbhuangyi.com/music/api/getDiscList';
+  // const url = dev ? '/api/getDiscList' : 'http://ustbhuangyi.com/music/api/getDiscList';
+  const url = dev ? 'getDiscList' : 'http://ustbhuangyi.com/music/api/getDiscList';
+  // const url = 'getDiscList';
   const params = Object.assign({}, commonParams, {
     platform: 'yqq',
     hostUin: 0,
@@ -48,7 +50,9 @@ function getDiscList() {
 };
 
 function getSongList(disstid) {
-  const url = dev ? '/api/getCdInfo' : 'http://ustbhuangyi.com/music/api/getCdInfo';
+  // const url = dev ? '/api/getCdInfo' : 'http://ustbhuangyi.com/music/api/getCdInfo';
+  const url = dev ? '/getCdInfo' : 'http://ustbhuangyi.com/music/api/getCdInfo';
+  // const url = '/getCdInfo';
 
   const data = Object.assign({}, commonParams, {
     disstid,

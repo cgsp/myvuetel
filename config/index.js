@@ -4,6 +4,14 @@
 
 const path = require('path')
 
+const TARGET = require('./dev.env').TARGET;
+// 因为有讨厌的单引号与双引号问题
+const STR = TARGET.substr(1, TARGET.length-2);
+
+
+console.log(STR==='http://localhost:8888')
+console.log(STR)
+
 module.exports = {
   dev: {
 
@@ -12,11 +20,12 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost:8888', // 接口的域名
+        target: STR, // 接口的域名
+        // target: 'http://localhost:8888', // 接口的域名
         // secure: false,  // 如果是https接口，需要配置这个参数
         changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
         pathRewrite: {
-          // '^/api': ''
+          '^/api': ''
           // '^/api': '/api'
         }
       }
@@ -62,7 +71,8 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    // assetsPublicPath: '/',
+    assetsPublicPath: './',
 
     /**
      * Source Maps
