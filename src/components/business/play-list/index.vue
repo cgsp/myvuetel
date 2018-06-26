@@ -29,7 +29,7 @@
           </transition-group>
         </scroll>
         <div class="list-operate">
-          <div class="add">
+          <div class="add" @click="addSongShow">
             <i class="icon-add"></i>
             <span class="text">添加歌曲到队列</span>
           </div>
@@ -38,6 +38,7 @@
           <span>关闭</span>
         </div>
         <confirm ref="confirm" text="确定清空吗" @confirm="clearConfirm"></confirm>
+        <add-song ref="addSong"></add-song>
       </div>
     </div>
   </transition>
@@ -46,6 +47,7 @@
 <script type='text/ecmascript-6'>
 import Scroll from '@VBase/scroll';
 import Confirm from '@VBase/confirm';
+import AddSong from '@VBusiness/add-song';
 import { mapActions } from 'vuex';
 // 放到mixin中
 // import { mapGetters, mapMutations, mapActions } from 'vuex';
@@ -71,6 +73,9 @@ export default {
     // ...mapGetters(['sequenceList', 'currentSong', 'playList', 'mode'])
   },
   methods: {
+    addSongShow() {
+      this.$refs.addSong.show();
+    },
     confirmShow() {
       this.$refs.confirm.show();
     },
@@ -123,7 +128,8 @@ export default {
   },
   components: {
     Scroll,
-    Confirm
+    Confirm,
+    AddSong
   }
 };
 </script>

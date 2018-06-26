@@ -1,24 +1,69 @@
 <template>
   <transition name="slide">
-    <div class="add-song">
+    <div class="add-song" v-show="showFlag" @click.stop>
       <div class="header">
-        <h1 class="title"></h1>
-        <div class="close">
+        <h1 class="title">添加歌曲到列表</h1>
+        <div class="close" @click="hide">
           <i class="icon-close"></i>
         </div>
       </div>
-      <div class="search-box-wrapper"></div>
-      <div class="shortcut"></div>
-      <div class="search-result"></div>
+      <div class="search-box-wrapper">
+        <search-box ref="searchBox" @queryChange=queryChange placeholder="请输入搜索关键字"></search-box>
+      </div>
+      <div class="shortcut" v-show="!query">
+        <tabs :tabs="tabs" :currentIndex="currentIndex" @changeTab="changeTab"></tabs>
+      </div>
+      <div class="search-result" v-show="query">
+        <suggest :query="query" :showSinger="false" @startScroll="startScroll" @select="selectSuggest"></suggest>
+      </div>
     </div>
   </transition>
 </template>
 
 <script type='text/ecmascript-6'>
+import SearchBox from '@VBase/search-box';
+import Suggest from '@VBusiness/suggest';
+import Tabs from '@VBase/tabs';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   name: 'addSong',
   data() {
-    return {};
+    return {
+      showFlag: false,
+      query: '',
+      currentIndex: 0,
+      tabs: [{ name: '最近播放' }, { name: '搜索历时' }]
+    };
+  },
+  computed: {
+    ...mapGetters(['searchHistory'])
+  },
+  methods: {
+    show() {
+      this.showFlag = true;
+    },
+    hide() {
+      this.showFlag = false;
+    },
+    queryChange(query) {
+      console.log(query);
+      this.query = query;
+    },
+    startScroll() {
+      this.$refs.searchBox.blur();
+    },
+    selectSuggest() {
+      this.saveSearchHistory(this.query);
+    },
+    changeTab(index) {
+      console.log(index);
+    },
+    ...mapActions(['saveSearchHistory'])
+  },
+  components: {
+    SearchBox,
+    Suggest,
+    Tabs
   }
 };
 </script>
