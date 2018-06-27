@@ -6,6 +6,11 @@ const SEARCH_KEY = '__search__';
 // 最大的存储条数
 const SEARCH_MAX_LENGTH = 15;
 
+// 最近播放歌曲
+const PLAY_KEY = '__paly__';
+
+const PLAY_MAX_LENGTH = 200;
+
 // 存储的时候，每新插入一条，把之前数组的最后一条删除，插入的新的数据，放在数组的最前面
 export function saveSearch(query) {
   let searches = myLocalStorageGet(SEARCH_KEY, []);
@@ -53,3 +58,22 @@ export function clearSearch() {
   return [];
 };
 
+// 存储的时候，每新插入一条，把之前数组的最后一条删除，插入的新的数据，放在数组的最前面
+export function savePlay(song) {
+  let playHistory = myLocalStorageGet(PLAY_KEY, []);
+
+  // debugger;
+
+  insertArray(playHistory, song, (item) => {
+    return item.id === song.id;
+  }, PLAY_MAX_LENGTH);
+
+  myLocalStorageSet(PLAY_KEY, playHistory);
+
+  // 同时return这个新的playHistory供外界使用
+  return playHistory;
+};
+
+export function loadPlayHistrory() {
+  return myLocalStorageGet(PLAY_KEY, []);
+};

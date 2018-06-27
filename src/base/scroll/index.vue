@@ -40,6 +40,10 @@ export default {
     beforeScroll: {
       type: Boolean,
       default: false
+    },
+    refreshDelay: {
+      type: Number,
+      default: 20
     }
   },
   mounted() {
@@ -117,7 +121,8 @@ export default {
     data() {
       setTimeout(() => {
         this.refresh();
-      }, 20);
+        // 有时候，如果外界有缓冲动画的话，20毫秒是不够的，需要外界手动设置更新的时间
+      }, this.refreshDelay);
     }
   }
 };

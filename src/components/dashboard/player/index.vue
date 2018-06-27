@@ -90,6 +90,7 @@
 
 <script type='text/ecmascript-6'>
 // import { mapGetters, mapMutations } from 'vuex';
+import { mapActions } from 'vuex';
 import createAnimations from 'create-keyframe-animation';
 import { prefixStyle } from '@utils/myDom';
 // 放到mixin中
@@ -276,6 +277,7 @@ export default {
     },
     canplay() {
       this.songReady = true;
+      this.savePlayHistory(this.currentSong);
     },
     error() {
       this.songReady = true;
@@ -413,7 +415,8 @@ export default {
         this.$refs.lyricList.scrollTo(0, 0, 1000);
       }
       this.playingLyric = txt;
-    }
+    },
+    ...mapActions(['savePlayHistory'])
     // 放到mixin中
     // ...mapMutations({
     //   setFullScreen: 'SET_FULL_SCREEN',

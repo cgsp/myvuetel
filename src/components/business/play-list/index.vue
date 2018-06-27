@@ -12,11 +12,11 @@
             </span>
           </h1>
         </div>
-        <scroll class="list-content" :data="sequenceList" ref="scroll" :startY="startY">
+        <scroll class="list-content" :data="sequenceList" :refreshDelay="refreshDelay" ref="scroll" :startY="startY">
           <!-- transition-group  tag="ul"，是让这个节点渲染成ul -->
           <!-- transition-group  transition-group的子元素，必须有个key来区分， 本例中可以用item.id来区分 -->
           <transition-group tag="ul" name="list">
-            <li class="item" v-for="(item, index) in sequenceList" :key="item.id" @click="selectItem(item, index,$event)">
+            <li class="item" v-for="(item, index) in sequenceList" :key="index" @click="selectItem(item, index,$event)">
               <i class="current" :class="getCurrentSong(item, index)"></i>
               <span class="text">{{item.name}}</span>
               <span class="like">
@@ -60,7 +60,8 @@ export default {
     return {
       showFlag: false,
       startY: 0,
-      index: 0
+      index: 0,
+      refreshDelay: 600
     };
   },
   computed: {

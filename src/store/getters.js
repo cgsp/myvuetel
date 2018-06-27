@@ -23,3 +23,5 @@ export const recommendDetail = state => state.recommendDetail;
 export const rankDetail = state => state.rankDetail;
 
 export const searchHistory = state => state.searchHistory;
+
+export const playHistory = state => state.playHistory;
