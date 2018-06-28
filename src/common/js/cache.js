@@ -11,6 +11,11 @@ const PLAY_KEY = '__paly__';
 
 const PLAY_MAX_LENGTH = 200;
 
+// 喜欢的歌曲收藏
+const FAVORITE_KEY = '__favorite__';
+
+const FAVORITE_MAX_LENGTH = 200;
+
 // 存储的时候，每新插入一条，把之前数组的最后一条删除，插入的新的数据，放在数组的最前面
 export function saveSearch(query) {
   let searches = myLocalStorageGet(SEARCH_KEY, []);
@@ -77,3 +82,35 @@ export function savePlay(song) {
 export function loadPlayHistrory() {
   return myLocalStorageGet(PLAY_KEY, []);
 };
+
+export function saveFavorite(song) {
+  let favoriteList = myLocalStorageGet(FAVORITE_KEY, []);
+
+  insertArray(favoriteList, song, (item) => {
+    return item.id === song.id;
+  }, FAVORITE_MAX_LENGTH);
+
+  myLocalStorageSet(FAVORITE_KEY, favoriteList);
+
+  // 同时return这个新的favoriteList供外界使用
+  return favoriteList;
+};
+
+export function deleteFavorite(song) {
+  let favoriteList = myLocalStorageGet(FAVORITE_KEY, []);
+
+  deleteFromArray(favoriteList, (item) => {
+    return item.id === song.id;
+  });
+
+  myLocalStorageSet(FAVORITE_KEY, favoriteList);
+
+  // 同时return这个新的favoriteList供外界使用
+  return favoriteList;
+};
+
+export function loadFavoriteList() {
+  return myLocalStorageGet(FAVORITE_KEY, []);
+};
+
+

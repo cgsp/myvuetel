@@ -7,6 +7,7 @@ import RecommendDetail from '@VBusiness/recommend-detail';
 import Singer from '@VBusiness/singer';
 import Search from '@VBusiness/search';
 import SingerDetail from '@VBusiness/singer-detail';
+import UserCenter from '@VBusiness/user-center';
 Vue.use(Router);
 
 const router = new Router({
@@ -54,6 +55,10 @@ const router = new Router({
           component: RecommendDetail
         }
       ]
+    },
+    {
+      path: '/user',
+      component: UserCenter
     }
   ]
 });
