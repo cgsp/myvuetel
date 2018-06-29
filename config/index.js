@@ -6,10 +6,10 @@ const path = require('path')
 
 const TARGET = require('./dev.env').TARGET;
 // 因为有讨厌的单引号与双引号问题
-const STR = TARGET.substr(1, TARGET.length-2);
+const STR = TARGET.substr(1, TARGET.length - 2);
 
 
-console.log(STR==='http://localhost:8888')
+console.log(STR === 'http://localhost:8888')
 console.log(STR)
 
 module.exports = {
@@ -78,15 +78,18 @@ module.exports = {
      * Source Maps
      */
 
-    productionSourceMap: true,
+    productionSourceMap: false,
     // https://webpack.js.org/configuration/devtool/#production
-    devtool: '#source-map',
+
+    // devtool: '#source-map',
+    devtool: '#nosources-source-map',
 
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
     // Before setting to `true`, make sure to:
     // npm install --save-dev compression-webpack-plugin
-    productionGzip: false,
+    // productionGzip: false,
+    productionGzip: true,
     productionGzipExtensions: ['js', 'css'],
 
     // Run the build command with an extra argument to
