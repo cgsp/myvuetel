@@ -477,7 +477,7 @@ export default {
     right: 0;
     bottom: 0;
     top: 0;
-    z-index: 150;
+    z-index: 100000;
     background: $color-background;
     .background {
       position: absolute;
@@ -699,7 +699,7 @@ export default {
     width: 100%;
     height: 60px;
     background-color: $color-highlight-background;
-    z-index: 151;
+    z-index: 100001;
     .icon {
       flex: 0 0 40px;
       width: 40px;
