@@ -84,7 +84,7 @@
     </transition>
     <!-- 播放列表组件 -->
     <play-list ref="playList"></play-list>
-    <audio ref="audio" :src="currentSong.url" @canplay="canplay" @error="error" @timeupdate="timeupdate" @ended="end"></audio>
+    <audio ref="audio" :src="currentSong.url" @play="canplay" @error="error" @timeupdate="timeupdate" @ended="end"></audio>
   </div>
 </template>
 
@@ -225,6 +225,7 @@ export default {
       }
       if (this.playList.length === 1) {
         this.loop();
+        return;
       } else {
         let index = this.currentIndex + 1;
         if (index === this.playList.length) {
@@ -244,6 +245,7 @@ export default {
       }
       if (this.playList.length === 1) {
         this.loop();
+        return;
       } else {
         let index = this.currentIndex - 1;
         if (index === -1) {
@@ -398,6 +400,9 @@ export default {
     },
     _getLyric() {
       this.currentSong.getLyric().then(lyric => {
+        if (this.currentSong.lyric !== lyric) {
+          return;
+        }
         this.currentLyric = new LyricParser(lyric, this._handleLyric);
         if (this.playing) {
           this.currentLyric.play();
@@ -444,7 +449,8 @@ export default {
       //   this._getLyric();
       // });
       // 换成下面的写法，可以保证切换到后台的话，再切换回来，还会执行
-      setTimeout(() => {
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => {
         const audio = this.$refs.audio;
         audio.play();
         // 给这个当前的song，获取其歌词
