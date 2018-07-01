@@ -34,6 +34,8 @@ module.exports = {
     'indent': 0,
     // 允许多行空格
     'no-multiple-empty-lines': 0,
+    // 允许多余的括号
+    'no-extra-parens': 0
   }
 }
 
