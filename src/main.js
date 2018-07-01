@@ -17,7 +17,7 @@ fastclick.attach(document.body);
 // document.addEventListener('touchmove', function (event) {
 //   event.preventDefault();
 //   // handle move
-// }, false);
+// }, false);111
 
 
 Vue.use(VueLazyLoad, {
