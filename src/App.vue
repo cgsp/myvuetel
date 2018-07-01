@@ -14,6 +14,7 @@ import VHeader from '@VDashboard/header';
 import Tab from '@VDashboard/tab';
 import Player from '@VDashboard/player';
 
+console.log($('#app'));
 export default {
   name: 'App',
   components: {

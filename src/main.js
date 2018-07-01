@@ -8,6 +8,9 @@ import router from './router';
 import store from './store';
 
 import '@scss/index.scss';
+
+import 'jquery';
+
 import VueLazyLoad from 'vue-lazyload';
 
 Vue.config.productionTip = false;

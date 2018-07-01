@@ -6,7 +6,10 @@ module.exports = {
     parser: 'babel-eslint'
   },
   env: {
+    // 原有
     browser: true,
+    // 添加
+    jquery: true
   },
   extends: [
     // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
