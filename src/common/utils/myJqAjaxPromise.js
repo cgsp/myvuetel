@@ -1,4 +1,7 @@
-// 测试发现ie9不支持
+/*
+ *
+ * jqajax + promise方式，不支持ie9
+ */
 
 const myJqAjaxPromise = function (apiBaseUrl, URL, options) {
   apiBaseUrl = apiBaseUrl || '';

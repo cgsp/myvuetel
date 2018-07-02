@@ -2,32 +2,34 @@
  * @Author: John.Guan
  * @Date: 2018-06-27 15:26:02
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-07-02 20:32:18
+ * @Last Modified time: 2018-07-02 21:19:39
  */
-
-/*
- *
- * 采用formDate方式的示范请求
- */
-
-// import { myJsonp } from '@utils/myJsonp';
+import { myJsonp } from '@utils/myJsonp';
 import { myLocalStorageGet } from '@utils/myStorage';
 import { myAxios } from '@utils/myAxios';
 import qs from 'qs';
 import { myJqAjaxPromise } from '@utils/myJqAjaxPromise';
 // const dev = process.env.NODE_ENV !== 'production';
 
-// function getRecommend() {
-//   const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg';
-//   const params = Object.assign({}, commonParams, {
-//     platform: 'h5',
-//     uin: 0,
-//     needNewCode: 1
-//   });
+/*
+ *
+ * jsonp方式
+ */
+function getJsonp() {
+  const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg';
+  const params = Object.assign({}, commonParams, {
+    platform: 'h5',
+    uin: 0,
+    needNewCode: 1
+  });
 
-//   return myJsonp(url, params, options);
-// };
+  return myJsonp(url, params, options);
+};
 
+/*
+ *
+ * 采用formDate方式
+ */
 function getDiscList() {
   const url = '/PersonalCenter/v1/Awardcode/exchangeAwardcode';
   const time = Date.now();
@@ -65,6 +67,10 @@ function getDiscList() {
   });
 };
 
+/*
+ *
+ * axios采用formdate传参的方式
+ */
 function exchange(money, rate, amount, kcode) {
   // const url = 'https://accountsym.phicomm.com/ddwexchange/v1/exchange';
   const url = 'https://accountsymtest.phicomm.com/ddwexchange/v1/exchange';
@@ -98,7 +104,10 @@ function exchange(money, rate, amount, kcode) {
       .catch(err => reject(err));
   });
 };
-
+/*
+ *
+ * jqajax + promise方式，不支持ie9
+ */
 function testJqPromise() {
   const apiBaseUrl = 'http://localhost:9999';
   const url = '/api/paihang';
@@ -120,4 +129,4 @@ function testJqPromise() {
 };
 
 
-export { getDiscList, exchange, testJqPromise };
+export { getJsonp, getDiscList, exchange, testJqPromise };
