@@ -2,9 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 // 兼容处理
 import 'babel-polyfill';
-// 兼容处理
-if (Number.parseInt === undefined) Number.parseInt = window.parseInt;
-if (Number.parseFloat === undefined) Number.parseFloat = window.parseFloat;
+
 import fastclick from 'fastclick';
 import Vue from 'vue';
 import App from './App';
@@ -18,6 +16,10 @@ import 'jquery';
 import VueLazyLoad from 'vue-lazyload';
 
 Vue.config.productionTip = false;
+
+// 兼容处理
+if (Number.parseInt === undefined) Number.parseInt = window.parseInt;
+if (Number.parseFloat === undefined) Number.parseFloat = window.parseFloat;
 
 fastclick.attach(document.body);
 
