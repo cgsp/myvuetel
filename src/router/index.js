@@ -9,6 +9,18 @@ import Router from 'vue-router';
 // import SingerDetail from '@VBusiness/singer-detail';
 // import UserCenter from '@VBusiness/user-center';
 
+const Login = ((resolve) => {
+  import('@VDashboard/login').then((moudle) => {
+    resolve(moudle);
+  });
+});
+
+const Dash = ((resolve) => {
+  import('@VDashboard/dash').then((moudle) => {
+    resolve(moudle);
+  });
+});
+
 const Rank = ((resolve) => {
   import('@VBusiness/rank').then((moudle) => {
     resolve(moudle);
@@ -57,62 +69,70 @@ const UserCenter = ((resolve) => {
   });
 });
 
-
-
-
-
 Vue.use(Router);
 
 const router = new Router({
   routes: [
     {
       path: '',
-      redirect: '/recommend'
+      redirect: '/login'
     },
     {
-      path: '/rank',
-      component: Rank,
+      path: '/login',
+      component: Login
+    },
+    {
+      path: '/dash',
+      component: Dash,
+      redirect: '/dash/recommend',
       children: [
         {
-          path: ':id',
-          component: RankDetail
-        }
-      ]
-    },
-    {
-      path: '/singer',
-      component: Singer,
-      children: [
+          path: 'rank',
+          component: Rank,
+          children: [
+            {
+              path: ':id',
+              component: RankDetail
+            }
+          ]
+        },
         {
-          path: ':id',
-          component: SingerDetail
-        }
-      ]
-    },
-    {
-      path: '/search',
-      component: Search,
-      children: [
+          path: 'singer',
+          component: Singer,
+          children: [
+            {
+              path: ':id',
+              component: SingerDetail
+            }
+          ]
+        },
         {
-          path: ':id',
-          component: SingerDetail
-        }
-      ]
-    },
-    {
-      path: '/recommend',
-      component: Recommend,
-      children: [
+          path: 'search',
+          component: Search,
+          children: [
+            {
+              path: ':id',
+              component: SingerDetail
+            }
+          ]
+        },
         {
-          path: ':id',
-          component: RecommendDetail
+          path: 'recommend',
+          component: Recommend,
+          children: [
+            {
+              path: ':id',
+              component: RecommendDetail
+            }
+          ]
+        },
+        {
+          path: 'user',
+          component: UserCenter
         }
       ]
-    },
-    {
-      path: '/user',
-      component: UserCenter
     }
+
   ]
 });
 

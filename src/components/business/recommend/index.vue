@@ -59,7 +59,7 @@ export default {
   methods: {
     selectItem(item) {
       this.$router.push({
-        path: `/recommend/${item.dissid}`
+        path: `/dash/recommend/${item.dissid}`
       });
       this.setRecommendDetail(item);
     },

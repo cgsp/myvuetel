@@ -36,7 +36,7 @@ export default {
     },
     selectSinger(singer) {
       // console.log(singer);
-      this.$router.push(`/singer/${singer.id}`);
+      this.$router.push(`/dash/singer/${singer.id}`);
       // this.$router.push({
       //   path: `/singer/${singer.id}`
       // });

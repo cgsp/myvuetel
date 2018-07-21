@@ -37,7 +37,7 @@
     },
     created() {
       if (!this.singer.id) {
-        this.$router.push('/singer');
+        this.$router.push('/dash/singer');
         return;
       }
       this._getSingerDetail(this.singer.id);

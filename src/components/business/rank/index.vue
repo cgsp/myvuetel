@@ -44,7 +44,7 @@ export default {
   methods: {
     selectItem(item) {
       this.$router.push({
-        path: `/rank/${item.id}`
+        path: `/dash/rank/${item.id}`
       });
       this.setRankDetail(item);
     },

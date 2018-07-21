@@ -65,7 +65,7 @@ export default {
           name: item.singername
         });
         this.$router.push({
-          path: `/search/${singer.id}`
+          path: `/dash/search/${singer.id}`
         });
         this.setSinger(singer);
       } else {

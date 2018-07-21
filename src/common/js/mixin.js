@@ -1,6 +1,11 @@
 import { mapGetters, mapMutations, mapActions } from 'vuex';
 import { playMode } from '@js/config';
 import { myShuffle } from '@utils/myHandleArr';
+import { login } from '@api/login';
+// import { myLocalStorageSet, myLocalStorageGet } from '@utils/myStorage';
+import { myLocalStorageSet } from '@utils/myStorage';
+// import CryptoJS from 'crypto-js';
+
 
 export const playListMixin = {
   computed: {
@@ -98,4 +103,83 @@ export const playerMixin = {
     ])
   }
 
+};
+
+export const loginMixin = {
+  data() {
+    return {
+      username: '',
+      password: '',
+      tipTitle: '',
+      tipContent: '',
+      loadingShow: false
+    };
+  },
+  created() {
+    // this.username = myLocalStorageGet('username', '');
+    // this.password = myLocalStorageGet('password', '');
+  },
+  methods: {
+    login() {
+      if (!this.username) {
+        this.showTip('请输入用户名！');
+        return;
+      }
+      if (!this.password) {
+        this.showTip('请输入密码！');
+        return;
+      }
+
+
+      const username = $.trim(this.username);
+      const password = $.trim(this.password);
+
+      if (username === 'admin' && password === '123456') {
+        this.$router.push({
+          path: '/dash'
+        });
+        myLocalStorageSet('hasLogin', true);
+        return;
+      }
+
+      this.showTip('用户名或密码错误');
+
+      // let password = $.trim(this.password);
+      // password = CryptoJS.MD5(password).toString(CryptoJS.enc.Hex);
+      // this._login(username, password);
+    },
+    showTip(title, content) {
+      this.tipTitle = title;
+      this.tipContent = content || '';
+      this.$refs.middleTip.show();
+    },
+    _login(username, password) {
+      this.loadingShow = true;
+      login(username, password)
+        .then(res => {
+          if (res && res.error === 0) {
+            this.loadingShow = false;
+            const token = res.token;
+            myLocalStorageSet('token', token);
+            myLocalStorageSet('username', this.username);
+            myLocalStorageSet('password', this.password);
+            this.$router.push({
+              path: 'charts'
+            });
+          } else {
+            this.loadingShow = false;
+            this.tipTitle = res.msg;
+            this.tipContent = '';
+            this.$refs.middleTip.show();
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.tipTitle = '网络问题，请刷新页面重试';
+          this.tipContent = '';
+          this.loadingShow = false;
+          this.$refs.middleTip.show();
+        });
+    }
+  }
 };
