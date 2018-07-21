@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import { myLocalStorageGet } from '@utils/myStorage';
 // import Rank from '@VBusiness/rank';
 // import RankDetail from '@VBusiness/rank-detail';
 // import Recommend from '@VBusiness/recommend';
@@ -134,6 +135,37 @@ const router = new Router({
     }
 
   ]
+});
+
+
+// 登录拦截器
+const hasLogin = myLocalStorageGet('hasLogin', '');
+
+// router.beforeEach((to, from, next) => {
+//   if (to.path === '/login') {
+//     next();
+//   } else {
+//     if (!hasLogin && (to.path === '/watchHouse' || to.path === '/AgentMsg')) {
+//       next({ path: '/login' });
+//     } else {
+//       next();
+//     }
+//     if (!store.state.user && (from.path === '/my') && (to.path === '/ToolCompute')) {
+//       next({ path: '/login' });
+//     }
+//   }
+// });
+
+router.beforeEach((to, from, next) => {
+  if (to.path === '/login') {
+    next();
+  } else {
+    if (!hasLogin) {
+      next({ path: '/login' });
+    } else {
+      next();
+    }
+  }
 });
 
 export default router;
