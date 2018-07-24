@@ -5,6 +5,7 @@ import 'babel-polyfill';
 
 import fastclick from 'fastclick';
 import Vue from 'vue';
+import { Button, Select } from 'element-ui';
 import App from './App';
 import router from './router';
 import store from './store';
@@ -34,6 +35,8 @@ Vue.use(VueLazyLoad, {
   preLoad: 1.3,
   attempt: 1
 });
+Vue.use(Button);
+Vue.use(Select);
 
 /* eslint-disable no-new */
 new Vue({

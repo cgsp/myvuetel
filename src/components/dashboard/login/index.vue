@@ -17,6 +17,7 @@
       <div class="input login-button" @click="login">
         登录
       </div>
+      <el-button type="primary" icon="el-icon-edit"></el-button>
       <middle-tip ref="middleTip" :textTitle="tipTitle" :textContent="tipContent"></middle-tip>
       <div class="loading-container" v-show="loadingShow">
         <loading :title="'拼命加载中...'"></loading>

@@ -138,8 +138,7 @@ const router = new Router({
 });
 
 
-// 登录拦截器
-const hasLogin = myLocalStorageGet('hasLogin', '');
+
 
 // router.beforeEach((to, from, next) => {
 //   if (to.path === '/login') {
@@ -155,11 +154,12 @@ const hasLogin = myLocalStorageGet('hasLogin', '');
 //     }
 //   }
 // });
-
 router.beforeEach((to, from, next) => {
   if (to.path === '/login') {
     next();
   } else {
+    // debugger;
+    const hasLogin = myLocalStorageGet('hasLogin', '');
     if (!hasLogin) {
       next({ path: '/login' });
     } else {

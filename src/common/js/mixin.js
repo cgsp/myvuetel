@@ -135,10 +135,15 @@ export const loginMixin = {
       const password = $.trim(this.password);
 
       if (username === 'admin' && password === '123456') {
-        this.$router.push({
-          path: '/dash'
-        });
         myLocalStorageSet('hasLogin', true);
+        setTimeout(() => {
+          this.$router.push({
+            path: '/dash'
+          });
+        }, 100);
+        // this.$router.push({
+        //   path: '/dash'
+        // });
         return;
       }
 
