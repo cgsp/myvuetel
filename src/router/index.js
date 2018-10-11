@@ -10,6 +10,13 @@ import { myLocalStorageGet } from '@utils/myStorage';
 // import SingerDetail from '@VBusiness/singer-detail';
 // import UserCenter from '@VBusiness/user-center';
 
+
+const DBanner = ((resolve) => {
+  import('@VDashboard/3d-banner').then((moudle) => {
+    resolve(moudle);
+  });
+});
+
 const Login = ((resolve) => {
   import('@VDashboard/login').then((moudle) => {
     resolve(moudle);
@@ -81,6 +88,10 @@ const router = new Router({
     {
       path: '/login',
       component: Login
+    },
+    {
+      path: '/3d-banner',
+      component: DBanner
     },
     {
       path: '/dash',
