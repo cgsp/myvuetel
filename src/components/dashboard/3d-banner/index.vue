@@ -1,6 +1,6 @@
 <template>
   <div class="d3-banner" v-if="autoplay">
-    <carousel-3d :autoplay="autoplay" :autoplayTimeout="3000" :autoplayHoverPause="true" :border="0" :width="width" :height="height" :space="space" :perspective="60" :bias="'right'" @after-slide-change="afterSlideChanged" :on-main-slide-click="onMainSlideClick" @slide-click="lastSlide">
+    <carousel-3d :autoplay="autoplay" :autoplayTimeout="3000" :autoplayHoverPause="true" :border="0" :width="width" :height="height" :space="space" :perspective="60" :bias="'right'" @after-slide-change="afterSlideChanged" :on-main-slide-click="onMainSlideClick">
       <slide :index="0">
         <img src="./1.jpg" alt="pic">
       </slide>
@@ -66,16 +66,10 @@ export default {
       // console.log(currentIndex);
       this.currentIndex = currentIndex;
     },
-    click() {
-      this.log = "click";
-    },
     onMainSlideClick() {
       // alert("跳转");
       // alert(this.currentIndex);
       this.$router.push("/dash/recommend");
-    },
-    lastSlide() {
-      console.log("最后");
     }
   },
   components: {
