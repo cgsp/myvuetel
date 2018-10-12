@@ -9,6 +9,8 @@ import { Button, Select } from 'element-ui';
 import App from './App';
 import router from './router';
 import store from './store';
+// 3d轮播图
+import Carousel3d from 'vue-carousel-3d';
 
 import '@scss/index.scss';
 
@@ -37,6 +39,7 @@ Vue.use(VueLazyLoad, {
 });
 Vue.use(Button);
 Vue.use(Select);
+Vue.use(Carousel3d);
 
 /* eslint-disable no-new */
 new Vue({
